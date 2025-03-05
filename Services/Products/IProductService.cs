@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Services
+namespace App.Services.Products
 {
-    internal class ProductService
+    public interface IProductService
     {
+
     }
 }
