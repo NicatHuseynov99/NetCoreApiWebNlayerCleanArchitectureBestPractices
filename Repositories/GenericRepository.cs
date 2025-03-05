@@ -21,7 +21,7 @@ namespace App.Repositories
 
         public ValueTask<T?> GetByIdAsync(int id) => _dbSet.FindAsync(id);
 
-        public void Updater(T entity) => _dbSet.Update(entity);
+        public void Update(T entity) => _dbSet.Update(entity);
 
         public IQueryable<T> Where(Expression<Func<T, bool>> predicate) => _dbSet.Where(predicate);
     }

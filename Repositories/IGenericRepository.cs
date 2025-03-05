@@ -13,7 +13,7 @@ namespace App.Repositories
         IQueryable<T> Where(Expression<Func<T, bool>> predicate);
         ValueTask<T?> GetByIdAsync(int id);
         ValueTask AddAsync(T entity);
-        void Updater(T entity);
+        void Update(T entity);
         void Delete(T entity);
     }
 }
