@@ -1,5 +1,6 @@
 ﻿using App.Repositories;
 using App.Repositories.Products;
+using App.Services.ExceptionHandlers;
 using App.Services.Products.Create;
 using App.Services.Products.Update;
 using AutoMapper;
@@ -56,6 +57,7 @@ namespace App.Services.Products
         }
         public async Task<ServiceResult<CreateProductResponse>> CreateAsync(CreateProductRequest request)
         {
+            throw new CriticalException("Kritic seviyye bir exception ortaya cixdi");
             var anyProduct = await productRepository.Where(p => p.Name == request.Name).AnyAsync();
             if (anyProduct)
             {
