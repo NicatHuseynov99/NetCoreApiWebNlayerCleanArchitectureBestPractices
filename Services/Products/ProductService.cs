@@ -3,6 +3,7 @@ using App.Repositories.Products;
 using App.Services.ExceptionHandlers;
 using App.Services.Products.Create;
 using App.Services.Products.Update;
+using App.Services.Products.UpdateStock;
 using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -57,7 +58,8 @@ namespace App.Services.Products
         }
         public async Task<ServiceResult<CreateProductResponse>> CreateAsync(CreateProductRequest request)
         {
-            throw new CriticalException("Kritic seviyye bir exception ortaya cixdi");
+            //throw new CriticalException("Kritic seviyye bir exception ortaya cixdi");
+            //throw new Exception("db hatasi");
             var anyProduct = await productRepository.Where(p => p.Name == request.Name).AnyAsync();
             if (anyProduct)
             {
@@ -75,6 +77,8 @@ namespace App.Services.Products
             await unitOfWork.SaveChangesAsync();
             return ServiceResult<CreateProductResponse>.SuccessAsCreated(new CreateProductResponse(product.Id), $"api/products/{product.Id}");
         }
+
+
         public async Task<ServiceResult> UpdateAsync(int id, UpdateProductRequest request)
         {
             var product = await productRepository.GetByIdAsync(id);
@@ -82,6 +86,16 @@ namespace App.Services.Products
             {
                 return ServiceResult.Fail("Product not found", HttpStatusCode.NotFound);
             }
+
+            var isProductNameExist = await productRepository.Where(p => p.Name == request.Name && p.Id != product.Id).AnyAsync();
+
+            if (isProductNameExist)
+            {
+                return ServiceResult.Fail("Product already exists", HttpStatusCode.BadRequest);
+            }
+
+
+
             product.Name = request.Name;
             product.Price = request.Price;
             product.Stock = request.Stock;
