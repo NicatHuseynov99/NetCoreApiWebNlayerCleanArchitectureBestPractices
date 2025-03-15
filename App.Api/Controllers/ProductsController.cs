@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace App.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductsController(IProductService productService) : CustomController
+  
+    public class ProductsController(IProductService productService) : CustomBaseController
     {
 
         [HttpGet]

@@ -5,7 +5,9 @@ using System.Net;
 
 namespace App.Api.Controllers
 {
-    public class CustomController : ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CustomBaseController : ControllerBase
     {
         [NonAction]
         public IActionResult CreateActionResult<T>(ServiceResult<T> result)

@@ -61,18 +61,17 @@ namespace App.Services.Products
             //throw new CriticalException("Kritic seviyye bir exception ortaya cixdi");
             //throw new Exception("db hatasi");
             var anyProduct = await productRepository.Where(p => p.Name == request.Name).AnyAsync();
+
+
+
+
             if (anyProduct)
             {
                 return ServiceResult<CreateProductResponse>.Fail("Product already exists", HttpStatusCode.BadRequest);
             }
 
 
-            var product = new Product()
-            {
-                Name = request.Name,
-                Price = request.Price,
-                Stock = request.Stock
-            };
+            var product = mapper.Map<Product>(request);
             await productRepository.AddAsync(product);
             await unitOfWork.SaveChangesAsync();
             return ServiceResult<CreateProductResponse>.SuccessAsCreated(new CreateProductResponse(product.Id), $"api/products/{product.Id}");
@@ -96,9 +95,8 @@ namespace App.Services.Products
 
 
 
-            product.Name = request.Name;
-            product.Price = request.Price;
-            product.Stock = request.Stock;
+            product = mapper.Map(request, product);
+
             productRepository.Update(product);
             await unitOfWork.SaveChangesAsync();
             return ServiceResult.Success(HttpStatusCode.NoContent);
